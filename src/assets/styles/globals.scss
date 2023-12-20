@@ -1,7 +1,17 @@
+*,
+*::before,
+*::after {
+  padding: 0px;
+  margin: 0px;
+}
+body {
+  background: #f3f2fa;
+  width: 100vw;
+}
+.header-text {
+  font-size: 16px;
+}
 .image-upload {
-  .header-text {
-    font-size: 16px;
-  }
   .ant-upload-text {
     color: #1a1a1f;
     font-size: 20px;
@@ -19,9 +29,9 @@
     padding: 0 20px;
     border-radius: 12px;
     .image-info {
-        display: flex;
-        align-items: center;
-        gap: 15px;
+      display: flex;
+      align-items: center;
+      gap: 15px;
     }
   }
 }
@@ -51,4 +61,41 @@
   &:hover {
     background-color: #f5f4f9;
   }
+}
+.ant-select-selector {
+  &:hover {
+    background: #f9f9fa !important;
+    outline: none !important;
+    border: 1px solid #d9d9d9 !important;
+  }
+}
+
+.ant-select-selection-item {
+  display: flex;
+  align-self: center;
+  flex: none;
+  box-sizing: border-box;
+  max-width: 100%;
+  height: unset !important;
+  margin-top: unset !important;
+  margin-bottom: unset !important;
+  line-height: unset !important;
+  background: unset !important;
+  border: unset !important;
+  border-radius: unset !important;
+  cursor: default;
+  transition: font-size 0.3s, line-height 0.3s, height 0.3s;
+  margin-inline-end: unset !important;
+  padding-inline-start: unset !important;
+  padding-inline-end: unset !important;
+}
+
+.header-component {
+  width: calc(100% - 80px);
+  height: 80px;
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 40px;
 }
