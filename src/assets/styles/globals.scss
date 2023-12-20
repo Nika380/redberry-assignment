@@ -99,3 +99,24 @@ body {
   justify-content: space-between;
   padding: 0 40px;
 }
+
+.blog-section {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  h1 {
+    font-size: 60px;
+  }
+}
+
+.categories-section {
+  display: flex;
+  overflow-x: scroll;
+  justify-content: center;
+  width: 100%;
+  margin-top: 70px;
+  .categories {
+    display: flex;
+    gap: 10px;
+  }
+}

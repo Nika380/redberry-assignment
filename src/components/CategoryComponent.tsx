@@ -9,9 +9,10 @@ const CategoryComponent = ({ textColor, backgroundColor, title }: any) => {
         backgroundColor: backgroundColor,
         display: "inline-block",
         padding: "8px 16px",
-        alignItems: "flex-start",
+        alignItems: "center",
         gap: "10px",
         borderRadius: "30px",
+        whiteSpace: "nowrap",
       }}
     >
       {title}
