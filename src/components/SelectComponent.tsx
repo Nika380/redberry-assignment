@@ -2,13 +2,13 @@
 import API from "@/utils/API";
 import { Select, Typography } from "antd";
 import React, { useEffect, useState } from "react";
+import CategoryComponent from "./CategoryComponent";
 
 const { Option } = Select;
 const SelectComponent = () => {
   const [optionsList, setOptionsList] = useState<any[]>([]);
   const fetchOptionsList = async () => {
     await API.get("/categories").then((res) => {
-      console.log(res.data.data);
       setOptionsList(res.data.data);
     });
   };
@@ -31,19 +31,11 @@ const SelectComponent = () => {
           optionsList?.map((option: any) => {
             return (
               <Option key={option.id} value={option.id}>
-                <Typography
-                  style={{
-                    color: option.text_color,
-                    backgroundColor: option.background_color,
-                    display: "inline-block",
-                    padding: "8px 16px",
-                    alignItems: "flex-start",
-                    gap: "10px",
-                    borderRadius: "30px",
-                  }}
-                >
-                  {option.title}
-                </Typography>
+                <CategoryComponent
+                  textColor={option.text_color}
+                  backgroundColor={option.background_color}
+                  title={option.title}
+                />
               </Option>
             );
           })}
