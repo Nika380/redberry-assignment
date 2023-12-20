@@ -7,6 +7,8 @@
 body {
   background: #f3f2fa;
   width: 100vw;
+  overflow-x: hidden;
+  padding-bottom: 200px;
 }
 .header-text {
   font-size: 16px;
@@ -111,12 +113,34 @@ body {
 
 .categories-section {
   display: flex;
-  overflow-x: scroll;
   justify-content: center;
   width: 100%;
+  //   padding: 0 100px;
   margin-top: 70px;
-  .categories {
-    display: flex;
-    gap: 10px;
+}
+.categories {
+  overflow-x: scroll;
+  display: flex;
+  gap: 10px;
+  // width: 600px;
+}
+.blog-component {
+  width: 330px;
+  height: 620px;
+  display: flex;
+  gap: 20px;
+  flex-direction: column;
+  .ant-btn {
+    &:hover {
+      background: unset !important;
+    }
   }
+}
+
+.blogs {
+  display: flex;
+  padding: 80px;
+  gap: 150px;
+  justify-content: center;
+  flex-wrap: wrap;
 }
