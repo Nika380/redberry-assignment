@@ -119,8 +119,9 @@ body {
   margin-top: 70px;
 }
 .categories {
-  overflow-x: scroll;
+  //   overflow-x: scroll;
   display: flex;
+  flex-wrap: wrap;
   gap: 10px;
   // width: 600px;
 }
@@ -143,4 +144,49 @@ body {
   gap: 150px;
   justify-content: center;
   flex-wrap: wrap;
+}
+
+.arrow-btn {
+  position: absolute;
+  padding: 5px;
+  margin: 30px auto;
+  height: 50px;
+  width: 50px;
+  border-radius: 50%;
+  transition: all 0.2s linear;
+  cursor: pointer;
+  &::after {
+    content: "";
+    position: absolute;
+    left: 25px;
+    top: 25px;
+    z-index: 11;
+    display: block;
+    width: 15px;
+    height: 15px;
+    border-top: 2px solid #fff;
+    border-left: 2px solid #fff;
+  }
+}
+
+.back {
+  background: #d9d8e0;
+  rotate: -45deg;
+
+  &::after {
+    border-color: black;
+  }
+
+  &:hover {
+    background: #cfced6;
+  }
+}
+
+.next {
+  background: #512be7;
+  rotate: 135deg;
+
+  &::after {
+    border-color: white;
+  }
 }

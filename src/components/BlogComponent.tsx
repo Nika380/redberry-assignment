@@ -66,7 +66,9 @@ const BlogComponent = ({
       <Button
         type="text"
         style={{ color: "#5D37F3", display: "flex", alignItems: "center" }}
-        onClick={() => router.push(`http://localhost:3000/blogs/${blogId}`)}
+        onClick={() =>
+          router.push(`${process.env.NEXT_PUBLIC_DOMAIN_URL}/blogs/${blogId}`)
+        }
       >
         სრულად ნახვა <Image src={arrowImage} alt="" />
       </Button>

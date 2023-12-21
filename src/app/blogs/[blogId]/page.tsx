@@ -1,4 +1,5 @@
 "use client";
+import ArrowBtnComponent from "@/components/ArrowBtnComponent";
 import API from "@/utils/API";
 import { useParams } from "next/navigation";
 import React, { useEffect } from "react";
@@ -13,7 +14,12 @@ const SingleBlogPage = () => {
   useEffect(() => {
     fetchData();
   }, []);
-  return <div>SingleBlogPage</div>;
+  return (
+    <>
+      <ArrowBtnComponent goBack={true} />
+      <div className="single-blog-page">SingleBlogPage</div>
+    </>
+  );
 };
 
 export default SingleBlogPage;
