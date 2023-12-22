@@ -1,9 +1,5 @@
 /* eslint-disable react/jsx-key */
 "use client";
-import ExitIcon from "@/components/ExitIcon";
-import HeaderComponent from "@/components/HeaderComponent";
-import SelectComponent from "@/components/SelectComponent";
-import UploadImageComponent from "@/components/UploadImageComponent";
 import blogImage from "../../assets/images/blog-png.png";
 import Image from "next/image";
 import CategoryComponent from "@/components/CategoryComponent";
@@ -14,20 +10,52 @@ import BlogComponent from "@/components/BlogComponent";
 const BlogsPage = () => {
   const [statusList, setStatusList] = useState<any[]>([]);
   const [blogs, setBlogs] = useState<any[]>([]);
-  const [selectedCategories, setSelectedCategories] = useState<any[]>([]);
+  const [selectedCategories, setSelectedCategories] = useState<any[]>(
+    JSON.parse(localStorage.getItem("selectedCategories") ?? "[]")
+  );
+  const [refreshData, setRefreshData] = useState<boolean>(true);
   const fetchStatusList = async () => {
     await API.get("/categories").then((res) => {
       setStatusList(res.data.data);
     });
   };
   const fetchBlogs = async () => {
-    await API.get("/blogs").then((res) => {
-      setBlogs(res.data.data);
-    });
+    await API.get("/blogs")
+      .then((res) => {
+        let filteredBlogs = res.data.data;
+        if (selectedCategories.length > 0) {
+          filteredBlogs = res.data.data.filter((blog: any) =>
+            blog.categories.some((category: any) => {
+              return selectedCategories.includes(category.id);
+            })
+          );
+        }
+        setBlogs(filteredBlogs);
+      })
+      .finally(() => {
+        localStorage.setItem(
+          "selectedCategories",
+          JSON.stringify(selectedCategories)
+        );
+        setRefreshData(false);
+      });
+  };
+  const filterData = async (category: any) => {
+    setSelectedCategories((prevSelectedCategories) =>
+      prevSelectedCategories.includes(category.id)
+        ? prevSelectedCategories.filter(
+            (selectedId) => selectedId !== category.id
+          )
+        : [...prevSelectedCategories, category.id]
+    );
+    setRefreshData(true);
   };
   useEffect(() => {
-    fetchStatusList();
     fetchBlogs();
+  }, [refreshData]);
+
+  useEffect(() => {
+    fetchStatusList();
   }, []);
   return (
     <>
@@ -49,17 +77,8 @@ const BlogsPage = () => {
                   borderRadius: "20px",
                   border: `1px solid ${isSelected ? "black" : "transparent"}`,
                 }}
-                onClick={() => {
-                  setSelectedCategories((prevSelectedCategories) =>
-                    isSelected
-                      ? prevSelectedCategories.filter(
-                          (selectedId) => selectedId !== category.id
-                        )
-                      : [...prevSelectedCategories, category.id]
-                  );
-                }}
+                onClick={() => filterData(category)}
               >
-                {/* Render your CategoryComponent here */}
                 <CategoryComponent
                   textColor={category.text_color}
                   backgroundColor={category.background_color}
