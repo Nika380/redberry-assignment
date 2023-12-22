@@ -11,7 +11,9 @@ const BlogsPage = () => {
   const [statusList, setStatusList] = useState<any[]>([]);
   const [blogs, setBlogs] = useState<any[]>([]);
   const [selectedCategories, setSelectedCategories] = useState<any[]>(
-    JSON.parse(localStorage.getItem("selectedCategories") ?? "[]")
+    typeof window !== "undefined"
+      ? JSON.parse(localStorage.getItem("selectedCategories") ?? "[]")
+      : []
   );
   const [refreshData, setRefreshData] = useState<boolean>(true);
   const fetchStatusList = async () => {
