@@ -33,9 +33,7 @@ const BlogComponent = ({
       <Typography style={{ fontSize: "12px", color: "#85858D" }}>
         {createdAt}
       </Typography>
-      <Typography style={{ fontSize: "22px" }}>
-        EOMM-ის მრჩეველთა საბჭოს ნინო ეგაძე შეუერთდა
-      </Typography>
+      <Typography style={{ fontSize: "22px" }}>{title}</Typography>
       <div className="category-list">
         <div className="categories">
           {categories.map((category: any) => {
@@ -59,9 +57,7 @@ const BlogComponent = ({
           whiteSpace: "nowrap",
         }}
       >
-        {
-          "lorem wqsadsadsadsa dsa d sad sasa sa dsadsadsa   dsa dsadsadsadssa dsasa sa dsa dsadsa dsa  dsa dsa jdsakfbsakjf eafndsgb dsbafhubdg dsa dsagdvYUDBSA FDSGH DUABFDBSADBGSHJ DSAHUJBAYUSHJ N AIHUSFHAUTA A  UAUSIDHISAUFIEA"
-        }
+        {description}
       </Typography>
       <Button
         type="text"

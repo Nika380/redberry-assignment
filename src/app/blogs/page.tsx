@@ -10,59 +10,24 @@ import CategoryComponent from "@/components/CategoryComponent";
 import API from "@/utils/API";
 import { useEffect, useState } from "react";
 import BlogComponent from "@/components/BlogComponent";
-import testImage from "../../assets/images/black-rainbeer.png";
 
-const blogData = {
-  id: 186,
-  title: "Blog title",
-  description: "Blog description",
-  image:
-    "https://api.blog.redberryinternship.ge/storage/images/W4pCjs13njoi6t5QW4Cvj6g0TnxW0GxMNGCNMnHW.svg",
-  publish_date: "2023-11-19",
-  categories: [
-    {
-      id: 1,
-      title: "მარკეტი",
-      text_color: "#FFFFFF",
-      background_color: "#FFBB2F",
-    },
-    {
-      id: 2,
-      title: "აპლიკაცია",
-      text_color: "#FFFFFF",
-      background_color: "#1CD67D",
-    },
-    {
-      id: 3,
-      title: "ხელოვნური ინტელექტი",
-      text_color: "#FFFFFF",
-      background_color: "#B11CD6",
-    },
-    {
-      id: 4,
-      title: "UI/UX",
-      text_color: "#FFFFFF",
-      background_color: "#FA5757",
-    },
-    {
-      id: 5,
-      title: "კვლევა",
-      text_color: "#FFFFFF",
-      background_color: "#70CF25",
-    },
-  ],
-  author: "გელა გელაშვილი",
-  email: "gigagiorgadze@redberry.ge",
-};
 const BlogsPage = () => {
   const [statusList, setStatusList] = useState<any[]>([]);
+  const [blogs, setBlogs] = useState<any[]>([]);
+  const [selectedCategories, setSelectedCategories] = useState<any[]>([]);
   const fetchStatusList = async () => {
     await API.get("/categories").then((res) => {
       setStatusList(res.data.data);
     });
   };
+  const fetchBlogs = async () => {
+    await API.get("/blogs").then((res) => {
+      setBlogs(res.data.data);
+    });
+  };
   useEffect(() => {
     fetchStatusList();
+    fetchBlogs();
   }, []);
   return (
     <>
@@ -73,14 +38,28 @@ const BlogsPage = () => {
       <div className="categories-section">
         <div className="categories">
           {statusList.map((category) => {
+            const isSelected = selectedCategories.includes(category.id);
+
             return (
               <button
+                key={category.id}
                 style={{
-                  border: "none",
                   background: "none",
                   cursor: "pointer",
+                  borderRadius: "20px",
+                  border: `1px solid ${isSelected ? "black" : "transparent"}`,
+                }}
+                onClick={() => {
+                  setSelectedCategories((prevSelectedCategories) =>
+                    isSelected
+                      ? prevSelectedCategories.filter(
+                          (selectedId) => selectedId !== category.id
+                        )
+                      : [...prevSelectedCategories, category.id]
+                  );
                 }}
               >
+                {/* Render your CategoryComponent here */}
                 <CategoryComponent
                   textColor={category.text_color}
                   backgroundColor={category.background_color}
@@ -92,60 +71,19 @@ const BlogsPage = () => {
         </div>
       </div>
       <div className="blogs">
-        <BlogComponent
-          imageSrc={testImage}
-          author={blogData.author}
-          createdAt={blogData.publish_date}
-          title={blogData.title}
-          categories={blogData.categories}
-          description={blogData.description}
-          blogId={blogData.id}
-        />
-        <BlogComponent
-          imageSrc={testImage}
-          author={blogData.author}
-          createdAt={blogData.publish_date}
-          title={blogData.title}
-          categories={blogData.categories}
-          description={blogData.description}
-          blogId={blogData.id}
-        />
-        <BlogComponent
-          imageSrc={testImage}
-          author={blogData.author}
-          createdAt={blogData.publish_date}
-          title={blogData.title}
-          categories={blogData.categories}
-          description={blogData.description}
-          blogId={blogData.id}
-        />
-        <BlogComponent
-          imageSrc={testImage}
-          author={blogData.author}
-          createdAt={blogData.publish_date}
-          title={blogData.title}
-          categories={blogData.categories}
-          description={blogData.description}
-          blogId={blogData.id}
-        />
-        <BlogComponent
-          imageSrc={testImage}
-          author={blogData.author}
-          createdAt={blogData.publish_date}
-          title={blogData.title}
-          categories={blogData.categories}
-          description={blogData.description}
-          blogId={blogData.id}
-        />
-        <BlogComponent
-          imageSrc={testImage}
-          author={blogData.author}
-          createdAt={blogData.publish_date}
-          title={blogData.title}
-          categories={blogData.categories}
-          description={blogData.description}
-          blogId={blogData.id}
-        />
+        {blogs.map((blog) => {
+          return (
+            <BlogComponent
+              imageSrc={blog.image}
+              author={blog.author}
+              createdAt={blog.publish_date}
+              title={blog.title}
+              categories={blog.categories}
+              description={blog.description}
+              blogId={blog.id}
+            />
+          );
+        })}
       </div>
     </>
   );

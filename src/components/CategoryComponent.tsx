@@ -1,9 +1,10 @@
 import { Typography } from "antd";
 import React from "react";
 
-const CategoryComponent = ({ textColor, backgroundColor, title }: any) => {
+const CategoryComponent = ({ id, textColor, backgroundColor, title }: any) => {
   return (
     <Typography
+      key={id}
       style={{
         color: textColor,
         backgroundColor: backgroundColor,
