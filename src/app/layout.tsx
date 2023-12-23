@@ -1,6 +1,7 @@
 /* eslint-disable react/no-children-prop */
 import Index from "./page";
 import "../assets/styles/globals.scss";
+import { AuthProvider } from "@/context/AuthContext";
 
 export default function RootLayout({
   children,
@@ -10,7 +11,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <Index children={children} />
+        <AuthProvider>
+          <Index children={children} />
+        </AuthProvider>
       </body>
     </html>
   );

@@ -3,18 +3,22 @@ import React, { useState } from "react";
 import PrimaryButton from "./PrimaryButton";
 import API from "@/utils/API";
 import { ErrorMark, SuccessIcon } from "@/assets/images/images";
+import { useAuth } from "@/context/AuthContext";
 
 const LoginModal = ({ isOpen, setIsOpen }: any) => {
   const [isError, setIsError] = useState<boolean>(false);
-  const [isSuccess, setIsSuccess] = useState<boolean>(false);
+  const [isSuccess, setIsSuccess] = useState<boolean | null>(null);
   const [form] = Form.useForm();
+  const { login, logout } = useAuth();
   const handleLogin = async () => {
     const email = form.getFieldValue("email");
     await API.post("/login", { email: email })
       .then((res) => {
         setIsSuccess(true);
+        login();
       })
       .catch(() => {
+        logout();
         setIsError(true);
       });
   };
