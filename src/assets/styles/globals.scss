@@ -135,7 +135,7 @@ body {
   width: 330px;
   min-height: 620px;
   display: flex;
-  gap: 20px;
+  gap: 10px;
   flex-direction: column;
   .ant-btn {
     &:hover {
@@ -272,5 +272,21 @@ body {
   .next-btn {
     width: 50px;
     height: 50px;
+  }
+}
+.login-modal {
+  .ant-input {
+    &:hover {
+      border: 1.5px solid #5d37f3;
+      background: #f7f7ff;
+    }
+  }
+  .error {
+    border: 1px solid #ea1919;
+    background: #faf2f3;
+    &:hover {
+      border: 1px solid #ea1919;
+      background: #faf2f3;
+    }
   }
 }
