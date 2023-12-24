@@ -20,6 +20,15 @@ body {
   font-size: 16px;
 }
 .image-upload {
+  gap: 15px;
+  display: flex;
+  flex-direction: column;
+  .ant-upload-drag-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 180px;
+  }
   .ant-upload-text {
     color: #1a1a1f;
     font-size: 20px;
@@ -146,26 +155,24 @@ body {
 
 .blogs {
   display: flex;
-  padding: 80px;
+  padding: 80px 15%;
   gap: 150px;
-  justify-content: center;
+  // justify-content: center;
   flex-wrap: wrap;
 }
 
 .arrow-btn {
   position: absolute;
   padding: 5px;
-  // margin: 30px auto;
   height: 50px;
   width: 50px;
   border-radius: 50%;
   transition: all 0.2s linear;
+  border: none;
   cursor: pointer;
   &::after {
     content: "";
     position: absolute;
-    left: 25px;
-    top: 25px;
     z-index: 11;
     display: block;
     width: 15px;
@@ -178,8 +185,9 @@ body {
 .back {
   background: white;
   rotate: -45deg;
-
   &::after {
+    left: 19px;
+    top: 20px;
     border-color: black;
   }
 
@@ -193,6 +201,8 @@ body {
   rotate: 135deg;
 
   &::after {
+    left: 19px;
+    top: 18px;
     border-color: white;
   }
 }
@@ -281,12 +291,55 @@ body {
       background: #f7f7ff;
     }
   }
-  .error {
+}
+.error {
+  border: 1px solid #ea1919;
+  background: #faf2f3;
+  &:hover {
     border: 1px solid #ea1919;
-    background: #faf2f3;
-    &:hover {
-      border: 1px solid #ea1919;
-      background: #faf2f3;
+    background: telegra#faf2f3;
+  }
+}
+
+.add-blog {
+  display: flex;
+  flex-direction: column;
+  width: 600px;
+  gap: 50px;
+  margin: 0px 110%;
+  align-items: flex-start;
+  .ant-input {
+    width: 288px;
+    height: 44px;
+    flex-shrink: 0;
+    border-radius: 12px;
+    font-size: 14px;
+    border: 1px solid #e4e3eb;
+    background: #fcfcfd;
+    &::placeholder {
+      font-size: 18px;
     }
+    // border: " 1.5px solid #5D37F3",
+    // background: "#F7F7FF",
+  }
+}
+
+.image-input {
+  width: 600px;
+  height: 180px;
+  background: #f4f3ff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  border-radius: 12px;
+  border: 1px dashed #85858d;
+  cursor: pointer;
+  input {
+    display: none;
+  }
+  &:hover {
+    background: #f1effb;
   }
 }
