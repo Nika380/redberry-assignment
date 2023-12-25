@@ -1,12 +1,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/jsx-key */
 "use client";
-import ArrowBtnComponent from "@/components/ArrowBtnComponent";
 import API from "@/utils/API";
 import Image from "next/image";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import React, { useEffect, useRef, useState } from "react";
-import { Carousel } from "antd";
+import { Button, Carousel } from "antd";
 import BlogComponent from "@/components/BlogComponent";
 import CategoryComponent from "@/components/CategoryComponent";
 
@@ -14,19 +13,8 @@ const SingleBlogPage = () => {
   const { blogId } = useParams();
   const [blogData, setBlogData] = useState<any>({ categories: [] });
   const [allBlogs, setAllBlogs] = useState<any[]>([]);
-  //   const carouselRef: any = useRef(null);
+  const router = useRouter();
 
-  //   const goTo = () => {
-  //     if (carouselRef.current.slickNext()) {
-  //       carouselRef.current.slickNext();
-  //     }
-  //   };
-
-  //   const goTo = () => {
-  //     if (carouselRef.current.slickPrev()) {
-  //       carouselRef.current.slickPrev();
-  //     }
-  //   };
   const fetchData = async () => {
     await API.get(`/blogs/${blogId}`).then((res) => {
       setBlogData(res.data);
@@ -38,17 +26,23 @@ const SingleBlogPage = () => {
     });
   };
   const ref: any = useRef();
-  const goTo = (slide: any) => {
-    console.log(slide);
-    ref.current.goTo(slide, false);
-  };
+
   useEffect(() => {
     fetchData();
     fetchAllBlogs();
   }, []);
   return (
     <>
-      <ArrowBtnComponent goBack={true} />
+      <Button
+        className="arrow-btn back"
+        onClick={() => router.back()}
+        style={{
+          background: "#E4E3EB",
+          position: "absolute",
+          left: "80px",
+          top: "100px",
+        }}
+      />
       <div className="single-blog-page">
         <div className="blog-info-section">
           <Image src={blogData.image} alt="" width={720} height={330} />
@@ -79,29 +73,44 @@ const SingleBlogPage = () => {
             <h1>მსგავსი სტატიები</h1>
             <div className="btns">
               <div className="prev-btn">
-                <ArrowBtnComponent goBack={true} handleClick={goTo} />
+                <Button
+                  className="arrow-btn back"
+                  onClick={() => ref.current.prev()}
+                />
               </div>
               <div className="next-btn">
-                <ArrowBtnComponent goBack={false} handleClick={goTo} />
+                <Button
+                  className="arrow-btn next"
+                  onClick={() => ref.current.next()}
+                />
               </div>
             </div>
           </div>
           <Carousel ref={ref}>
-            <div className="blogs-list">
-              {allBlogs.map((blog) => {
-                return (
-                  <BlogComponent
-                    imageSrc={blog.image}
-                    author={blog.author}
-                    createdAt={blog.publish_date}
-                    title={blog.title}
-                    categories={blog.categories}
-                    description={blog.description}
-                    blogId={blog.id}
-                  />
-                );
-              })}
-            </div>
+            {allBlogs
+              .reduce((slides, blog, index) => {
+                if (index % 3 === 0) {
+                  slides.push([]);
+                }
+                slides[slides.length - 1].push(blog);
+                return slides;
+              }, [])
+              .map((slideBlogs: any, slideIndex: any) => (
+                <div key={slideIndex} className="blogs-list">
+                  {slideBlogs.map((blog: any) => (
+                    <BlogComponent
+                      key={blog.id}
+                      imageSrc={blog.image}
+                      author={blog.author}
+                      createdAt={blog.publish_date}
+                      title={blog.title}
+                      categories={blog.categories}
+                      description={blog.description}
+                      blogId={blog.id}
+                    />
+                  ))}
+                </div>
+              ))}
           </Carousel>
         </div>
       </div>
