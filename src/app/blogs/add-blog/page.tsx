@@ -1,6 +1,6 @@
 "use client";
 import { inputLabelStyles, labelSpaceStyles } from "@/assets/assets";
-import PrimaryButton from "@/components/PrimaryButton";
+import { ErrorMark } from "@/assets/images/images";
 import SelectComponent from "@/components/SelectComponent";
 import UploadImageComponent from "@/components/UploadImageComponent";
 import API from "@/utils/API";
@@ -10,11 +10,27 @@ import dayjs from "dayjs";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
+interface AuthorState {
+  authorCharlen: boolean | null;
+  authorWordCount: boolean | null;
+  onlyGeorgian: boolean | null;
+  descCharlen: boolean | null;
+  titleCharlen: boolean | null;
+  emailCheck: boolean | null;
+}
+
 const AddBlogPage = () => {
   const router = useRouter();
   const [form] = Form.useForm();
   const [imageFile, setImageFile] = useState<any>(null);
-  const [buttonDisabled, setButtonDisabled] = useState<boolean>(true);
+  const [textChecks, setTextChecks] = useState<AuthorState>({
+    authorCharlen: null,
+    authorWordCount: null,
+    onlyGeorgian: null,
+    descCharlen: null,
+    titleCharlen: null,
+    emailCheck: null,
+  });
 
   const handleSubmit = async (values: any) => {
     values.date = dayjs(values.date).format("YYYY-MM-DD");
@@ -33,6 +49,40 @@ const AddBlogPage = () => {
       { headers: { "Content-Type": "multipart/form-data" } }
     );
   };
+
+  const georgianRegex = /^[\u10A0-\u10FF\s]+$/;
+  const emailRegex = /^[a-zA-Z0-9._%+-]+@redberry\.ge$/;
+
+  const updateTextCheck = (key: keyof AuthorState, value: any) => {
+    setTextChecks((prevChecks) => ({
+      ...prevChecks,
+      [key]: value,
+    }));
+  };
+  const getAuthorClassName = () => {
+    if (
+      textChecks.authorCharlen === false ||
+      textChecks.authorWordCount === false ||
+      textChecks.onlyGeorgian === false
+    ) {
+      return "error";
+    } else if (
+      textChecks.authorCharlen === true &&
+      textChecks.authorWordCount === true &&
+      textChecks.onlyGeorgian === true
+    ) {
+      return "success";
+    } else {
+      return "";
+    }
+  };
+  const getTextClassName = (
+    condition: any,
+    successClassName: string,
+    errorClassName: string
+  ) =>
+    condition !== null ? (condition ? successClassName : errorClassName) : "";
+
   return (
     <>
       <Button
@@ -73,26 +123,79 @@ const AddBlogPage = () => {
               <Space className="author-space" {...labelSpaceStyles}>
                 <Typography {...inputLabelStyles}>ავტორი *</Typography>
                 <Form.Item name={"author"}>
-                  <Input placeholder="შეიყვანეთ ავტორი" className="success" />
+                  <Input
+                    placeholder="შეიყვანეთ ავტორი"
+                    className={getAuthorClassName()}
+                    onChange={(e) => {
+                      updateTextCheck(
+                        "authorCharlen",
+                        e.target.value.length >= 4
+                      );
+                      updateTextCheck(
+                        "onlyGeorgian",
+                        georgianRegex.test(e.target.value)
+                      );
+                      updateTextCheck(
+                        "authorWordCount",
+                        e.target.value.trim().split(/\s+/).length >= 2
+                      );
+                    }}
+                  />
                 </Form.Item>
-                {/* <Space
-                  style={{ left: "30px", top: "-20px", position: "relative" }}
-                >
-                  
-                </Space> */}
                 <ul className="req-list">
-                  <li className="req-text">მინიმუმ 4 სიმბოლო</li>
-                  <li className="req-text">მინიმუმ 2 სიტყვა</li>
-                  <li className="req-text">მხოლოდ ქართული სიმბოლოები</li>
+                  <li
+                    className={`req-text ${getTextClassName(
+                      textChecks.authorCharlen,
+                      "txt-success",
+                      "txt-error"
+                    )}`}
+                  >
+                    მინიმუმ 4 სიმბოლო
+                  </li>
+                  <li
+                    className={`req-text ${getTextClassName(
+                      textChecks.authorWordCount,
+                      "txt-success",
+                      "txt-error"
+                    )}`}
+                  >
+                    მინიმუმ 2 სიტყვა
+                  </li>
+                  <li
+                    className={`req-text ${getTextClassName(
+                      textChecks.onlyGeorgian,
+                      "txt-success",
+                      "txt-error"
+                    )}`}
+                  >
+                    მხოლოდ ქართული სიმბოლოები
+                  </li>
                 </ul>
               </Space>
               <Space className="title-space" {...labelSpaceStyles}>
                 <Typography {...inputLabelStyles}>სათაური *</Typography>
                 <Form.Item name={"title"}>
-                  <Input placeholder="შეიყვანეთ სათაური" />
+                  <Input
+                    placeholder="შეიყვანეთ სათაური"
+                    className={getTextClassName(
+                      textChecks.titleCharlen,
+                      "success",
+                      "error"
+                    )}
+                    onChange={(e) => {
+                      updateTextCheck(
+                        "titleCharlen",
+                        e.target.value.length >= 4
+                      );
+                    }}
+                  />
                 </Form.Item>
                 <Typography
-                  className="req-text"
+                  className={`req-text ${getTextClassName(
+                    textChecks.titleCharlen,
+                    "txt-success",
+                    "txt-error"
+                  )}`}
                   style={{ position: "relative", top: "-20px", left: "20px" }}
                 >
                   მინიმუმ 4 სიმბოლო
@@ -105,10 +208,22 @@ const AddBlogPage = () => {
                 <TextArea
                   style={{ width: "600px", height: "125px" }}
                   placeholder="შეიყვანეთ აღწერა"
+                  className={getTextClassName(
+                    textChecks.descCharlen,
+                    "success",
+                    "error"
+                  )}
+                  onChange={(e) => {
+                    updateTextCheck("descCharlen", e.target.value.length >= 4);
+                  }}
                 />
               </Form.Item>
               <Typography
-                className="req-text"
+                className={`req-text ${getTextClassName(
+                  textChecks.descCharlen,
+                  "txt-success",
+                  "txt-error"
+                )}`}
                 style={{ position: "relative", top: "-20px", left: "20px" }}
               >
                 მინიმუმ 4 სიმბოლო
@@ -133,15 +248,47 @@ const AddBlogPage = () => {
                 <Input
                   placeholder="Example@redberry.ge"
                   style={{
-                    width: "230px",
+                    width: "290px",
                     height: "44px",
                     flexShrink: 0,
                     borderRadius: "12px",
                   }}
+                  className={getTextClassName(
+                    textChecks.emailCheck,
+                    "success",
+                    "error"
+                  )}
+                  onChange={(e) => {
+                    updateTextCheck(
+                      "emailCheck",
+                      emailRegex.test(e.target.value)
+                    );
+                  }}
                 />
               </Form.Item>
+              {textChecks.emailCheck !== null && !textChecks.emailCheck && (
+                <Typography
+                  className="txt-error"
+                  style={{
+                    width: "290px",
+                    display: "flex",
+                    gap: "15px",
+                    fontSize: "12px",
+                    position: "relative",
+                    top: "-20px",
+                  }}
+                >
+                  <ErrorMark /> მეილი უნდა მთავრდებოდეს @redberry.ge-ით
+                </Typography>
+              )}
             </Space>
-            <Button htmlType="submit" type="text" disabled={buttonDisabled}>
+            <Button
+              htmlType="submit"
+              type="text"
+              disabled={
+                !Object.values(textChecks).every((value) => value === true)
+              }
+            >
               გამოქვეყნება
             </Button>
           </Space>
