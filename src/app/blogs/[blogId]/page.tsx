@@ -21,16 +21,25 @@ const SingleBlogPage = () => {
     });
   };
   const fetchAllBlogs = async () => {
-    await API.get(`/blogs`).then((res) => {
-      setAllBlogs(res.data.data);
+    await API.get(`/blogs`).then((res: any) => {
+      const filteredBlogs = res.data.data.filter((blog: any) => {
+        return blog.categories.some((category: any) =>
+          blogData.categories.some(
+            (selectedCategory: any) => selectedCategory.id === category.id
+          )
+        );
+      });
+      setAllBlogs(filteredBlogs);
     });
   };
   const ref: any = useRef();
 
   useEffect(() => {
     fetchData();
-    fetchAllBlogs();
   }, []);
+  useEffect(() => {
+    fetchAllBlogs();
+  }, [blogData]);
   return (
     <>
       <Button
