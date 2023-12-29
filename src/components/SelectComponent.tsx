@@ -6,7 +6,7 @@ import CategoryComponent from "./CategoryComponent";
 import { inputLabelStyles, labelSpaceStyles } from "@/assets/assets";
 
 const { Option } = Select;
-const SelectComponent = ({ setCategories }: any) => {
+const SelectComponent = ({ setCategories, notifClass }: any) => {
   const [optionsList, setOptionsList] = useState<any[]>([]);
   const fetchOptionsList = async () => {
     await API.get("/categories").then((res) => {
@@ -17,7 +17,7 @@ const SelectComponent = ({ setCategories }: any) => {
     fetchOptionsList();
   }, []);
   return (
-    <Space className="select-component" {...labelSpaceStyles}>
+    <Space className={`select-component `} {...labelSpaceStyles}>
       <Typography {...inputLabelStyles}>კატეგორია *</Typography>
       <Select
         style={{
@@ -30,6 +30,7 @@ const SelectComponent = ({ setCategories }: any) => {
         onChange={(categories) => {
           setCategories(categories);
         }}
+        className={notifClass}
       >
         {optionsList.length > 0 &&
           optionsList?.map((option: any) => {

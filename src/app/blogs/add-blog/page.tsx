@@ -27,6 +27,7 @@ interface AuthorState {
   titleCharlen: boolean | null;
   emailCheck: boolean | null;
   imageChosen: boolean | null;
+  categories: boolean | null;
 }
 
 const AddBlogPage = () => {
@@ -41,11 +42,16 @@ const AddBlogPage = () => {
     titleCharlen: null,
     emailCheck: null,
     imageChosen: null,
+    categories: null,
   });
   const [addedSuccessfully, setAddedSuccessfully] = useState<boolean>(false);
+  const [categories, setCategories] = useState<any[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+
   const handleSubmit = async (values: any) => {
+    setLoading(true);
     values.date = dayjs(values.date).format("YYYY-MM-DD");
-    values.categories = [1, 2];
+    values.categories = categories;
     await API.post(
       "/blogs",
       {
@@ -58,19 +64,24 @@ const AddBlogPage = () => {
         publish_date: values.date,
       },
       { headers: { "Content-Type": "multipart/form-data" } }
-    ).then(() => {
-      setAddedSuccessfully(true);
-      form.resetFields();
-      setTextChecks({
-        authorCharlen: null,
-        authorWordCount: null,
-        onlyGeorgian: null,
-        descCharlen: null,
-        titleCharlen: null,
-        emailCheck: null,
-        imageChosen: null,
+    )
+      .then(() => {
+        setAddedSuccessfully(true);
+        form.resetFields();
+        setTextChecks({
+          authorCharlen: null,
+          authorWordCount: null,
+          onlyGeorgian: null,
+          descCharlen: null,
+          titleCharlen: null,
+          emailCheck: null,
+          imageChosen: null,
+          categories: null,
+        });
+      })
+      .finally(() => {
+        setLoading(false);
       });
-    });
   };
 
   const georgianRegex = /^[\u10A0-\u10FF\s]+$/;
@@ -110,6 +121,9 @@ const AddBlogPage = () => {
     const isImageChosen = imageFile !== null || false;
     updateTextCheck("imageChosen", isImageChosen);
   }, [imageFile]);
+  useEffect(() => {
+    updateTextCheck("categories", categories.length > 0);
+  }, [categories]);
   return (
     <>
       <Button
@@ -262,12 +276,19 @@ const AddBlogPage = () => {
                 <Typography {...inputLabelStyles}>
                   გამოქვეყნების თარიღი *
                 </Typography>
-                <Form.Item name={"date"}>
-                  <DatePicker defaultValue={dayjs("12-02-2023")} />
+                <Form.Item name={"date"} initialValue={dayjs("12-02-2023")}>
+                  <DatePicker />
                 </Form.Item>
               </Space>
               <Form.Item name={"categories"}>
-                <SelectComponent />
+                <SelectComponent
+                  setCategories={setCategories}
+                  notifClass={getTextClassName(
+                    textChecks.categories,
+                    "success",
+                    "error"
+                  )}
+                />
               </Form.Item>
             </Space>
             <Space {...labelSpaceStyles}>
@@ -316,6 +337,7 @@ const AddBlogPage = () => {
               disabled={
                 !Object.values(textChecks).every((value) => value === true)
               }
+              loading={loading}
             >
               გამოქვეყნება
             </Button>
