@@ -1,6 +1,4 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
-/* eslint-disable react/jsx-key */
 import HeaderComponent from "@/components/HeaderComponent";
 import { useEffect } from "react";
 import { usePathname, useRouter } from "next/navigation";

@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-key */
 "use client";
 import { Button, Typography } from "antd";
 import Image from "next/image";

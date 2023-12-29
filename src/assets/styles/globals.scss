@@ -13,7 +13,6 @@ body {
   background: #f3f2fa;
   width: 100vw;
   overflow-x: hidden;
-  padding-bottom: 200px;
   font-family: "FiraGo";
 }
 .header-text {
@@ -89,8 +88,8 @@ body {
 }
 
 .ant-select-selection-item {
-  display: flex;
-  align-self: center;
+  display: inline-block;
+  align-self: flex-start;
   flex: none;
   box-sizing: border-box;
   max-width: 100%;
@@ -106,6 +105,9 @@ body {
   margin-inline-end: unset !important;
   padding-inline-start: unset !important;
   padding-inline-end: unset !important;
+  .ant-typography {
+    padding: 8px 30px !important;
+  }
 }
 
 .header-component {
@@ -332,8 +334,15 @@ body {
     background: #5d37f3;
     &:disabled {
       background: #e4e3eb;
+      &:hover {
+        background: #e4e3eb !important;
+      }
     }
     color: white;
+    &:hover {
+      background: #5d37f3 !important;
+      color: white !important;
+    }
   }
 }
 
@@ -397,4 +406,8 @@ img {
 
 .txt-error {
   color: #ea1919;
+}
+
+.pb {
+  padding-bottom: 200px !important;
 }

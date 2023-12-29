@@ -1,14 +1,23 @@
 "use client";
 import { inputLabelStyles, labelSpaceStyles } from "@/assets/assets";
-import { ErrorMark } from "@/assets/images/images";
+import { ErrorMark, SuccessIcon } from "@/assets/images/images";
+import PrimaryButton from "@/components/PrimaryButton";
 import SelectComponent from "@/components/SelectComponent";
 import UploadImageComponent from "@/components/UploadImageComponent";
 import API from "@/utils/API";
-import { Button, DatePicker, Form, Input, Space, Typography } from "antd";
+import {
+  Button,
+  DatePicker,
+  Form,
+  Input,
+  Modal,
+  Space,
+  Typography,
+} from "antd";
 import TextArea from "antd/es/input/TextArea";
 import dayjs from "dayjs";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 interface AuthorState {
   authorCharlen: boolean | null;
@@ -17,6 +26,7 @@ interface AuthorState {
   descCharlen: boolean | null;
   titleCharlen: boolean | null;
   emailCheck: boolean | null;
+  imageChosen: boolean | null;
 }
 
 const AddBlogPage = () => {
@@ -30,8 +40,9 @@ const AddBlogPage = () => {
     descCharlen: null,
     titleCharlen: null,
     emailCheck: null,
+    imageChosen: null,
   });
-
+  const [addedSuccessfully, setAddedSuccessfully] = useState<boolean>(false);
   const handleSubmit = async (values: any) => {
     values.date = dayjs(values.date).format("YYYY-MM-DD");
     values.categories = [1, 2];
@@ -47,7 +58,19 @@ const AddBlogPage = () => {
         publish_date: values.date,
       },
       { headers: { "Content-Type": "multipart/form-data" } }
-    );
+    ).then(() => {
+      setAddedSuccessfully(true);
+      form.resetFields();
+      setTextChecks({
+        authorCharlen: null,
+        authorWordCount: null,
+        onlyGeorgian: null,
+        descCharlen: null,
+        titleCharlen: null,
+        emailCheck: null,
+        imageChosen: null,
+      });
+    });
   };
 
   const georgianRegex = /^[\u10A0-\u10FF\s]+$/;
@@ -83,6 +106,10 @@ const AddBlogPage = () => {
   ) =>
     condition !== null ? (condition ? successClassName : errorClassName) : "";
 
+  useEffect(() => {
+    const isImageChosen = imageFile !== null || false;
+    updateTextCheck("imageChosen", isImageChosen);
+  }, [imageFile]);
   return (
     <>
       <Button
@@ -103,7 +130,7 @@ const AddBlogPage = () => {
             width: "100vw",
           }}
         >
-          <Space className="add-blog">
+          <Space className="add-blog pb">
             <Typography
               style={{
                 color: "#1A1A1F",
@@ -112,6 +139,7 @@ const AddBlogPage = () => {
                 fontWeight: "700",
                 lineHeight: "40px",
                 width: "600px",
+                padding: "30px 0 50px 0",
               }}
             >
               ბლოგის დამატება
@@ -294,6 +322,42 @@ const AddBlogPage = () => {
           </Space>
         </Space>
       </Form>
+      <Modal
+        open={addedSuccessfully}
+        onCancel={() => setAddedSuccessfully(false)}
+        footer={false}
+        style={{ top: "260px" }}
+      >
+        <Space
+          style={{
+            width: "480px",
+            height: "250px",
+            display: "flex",
+            flexDirection: "column",
+          }}
+        >
+          <SuccessIcon />
+          <Typography
+            style={{
+              color: "#1A1A1F",
+              textAlign: "center",
+              fontSize: "24px",
+              fontStyle: "normal",
+              fontWeight: "700",
+              lineHeight: "32px",
+              marginBottom: "45px",
+            }}
+          >
+            ჩანაწი წარმატებით დაემატა
+          </Typography>
+          <PrimaryButton
+            text={"მთავარ გვერდზე დაბრუნება"}
+            width={"432px"}
+            height={"44px"}
+            handleClick={() => router.push("/blogs")}
+          />
+        </Space>
+      </Modal>
     </>
   );
 };

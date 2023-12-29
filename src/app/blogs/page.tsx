@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-key */
 "use client";
 import blogImage from "../../assets/images/blog-png.png";
 import Image from "next/image";
@@ -61,7 +60,7 @@ const BlogsPage = () => {
   }, []);
   return (
     <>
-      <div className="blog-section">
+      <div className="blog-section pb">
         <h1>ბლოგი</h1>
         <Image src={blogImage} alt="" />
       </div>

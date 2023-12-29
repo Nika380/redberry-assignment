@@ -8,7 +8,7 @@ import { useAuth } from "@/context/AuthContext";
 import { usePathname, useRouter } from "next/navigation";
 
 const HeaderComponent = () => {
-  const { isAuth } = useAuth();
+  const isAuth = JSON.parse(window.localStorage.getItem("authed") || "false");
   const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false);
   const [isOnAddBlog, setIsOnAddBlog] = useState(false);
   const router = useRouter();

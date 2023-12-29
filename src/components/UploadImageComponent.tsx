@@ -21,10 +21,11 @@ const UploadImageComponent = ({ setImageFile }: any) => {
               id="file"
               onChange={(e: any) => {
                 const reader = new FileReader();
-
                 reader.onload = function (event: any) {
                   const binaryData = event.target.result;
                   setImageFile(binaryData);
+                  setFileChosen(true);
+                  setFileName(e.target.files[0].name);
                 };
 
                 if (e.target.files.length > 0) {

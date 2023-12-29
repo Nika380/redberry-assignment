@@ -1,5 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable react/jsx-key */
 "use client";
 import API from "@/utils/API";
 import Image from "next/image";
@@ -52,7 +50,7 @@ const SingleBlogPage = () => {
           top: "100px",
         }}
       />
-      <div className="single-blog-page">
+      <div className="single-blog-page pb">
         <div className="blog-info-section">
           <Image src={blogData.image} alt="" width={720} height={330} />
           <div className="blog-head">

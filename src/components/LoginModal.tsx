@@ -16,6 +16,7 @@ const LoginModal = ({ isOpen, setIsOpen }: any) => {
       .then((res) => {
         setIsSuccess(true);
         login();
+        window.localStorage.setItem("authed", "true");
       })
       .catch(() => {
         logout();

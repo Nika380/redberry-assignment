@@ -1,4 +1,3 @@
-/* eslint-disable react/no-children-prop */
 import Index from "./page";
 import "../assets/styles/globals.scss";
 import { AuthProvider } from "@/context/AuthContext";
