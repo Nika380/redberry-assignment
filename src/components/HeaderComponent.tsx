@@ -8,7 +8,10 @@ import { useAuth } from "@/context/AuthContext";
 import { usePathname, useRouter } from "next/navigation";
 
 const HeaderComponent = () => {
-  const isAuth = JSON.parse(localStorage.getItem("authed") || "false");
+  const isAuth =
+    typeof window !== "undefined"
+      ? JSON.parse(localStorage.getItem("authed") || "false")
+      : false;
   const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false);
   const [isOnAddBlog, setIsOnAddBlog] = useState(false);
   const router = useRouter();

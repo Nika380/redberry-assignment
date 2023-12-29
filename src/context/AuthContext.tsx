@@ -24,13 +24,9 @@ type AuthProviderProps = {
 const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   let initialAuthState = false;
 
-  try {
-    if (window) {
-      const storedAuth = window.localStorage.getItem("authed") || "false";
-      initialAuthState = JSON.parse(storedAuth);
-    }
-  } catch (error) {
-    console.error("Error parsing JSON from localStorage:", error);
+  if (typeof window !== "undefined") {
+    const storedAuth = localStorage.getItem("authed") || "false";
+    initialAuthState = JSON.parse(storedAuth);
   }
 
   const [isAuth, setIsAuth] = useState(initialAuthState);
