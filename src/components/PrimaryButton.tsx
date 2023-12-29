@@ -2,7 +2,7 @@
 import { Button } from "antd";
 import React from "react";
 
-const PrimaryButton = ({ text, width, height, handleClick }: any) => {
+const PrimaryButton = ({ text, width, height, handleClick, loading }: any) => {
   return (
     <Button
       style={{
@@ -13,6 +13,7 @@ const PrimaryButton = ({ text, width, height, handleClick }: any) => {
         height: height,
       }}
       onClick={() => handleClick()}
+      loading={loading}
     >
       {text}
     </Button>

@@ -45,7 +45,7 @@ const AddBlogPage = () => {
     categories: null,
   });
   const [addedSuccessfully, setAddedSuccessfully] = useState<boolean>(false);
-  const [categories, setCategories] = useState<any[]>([]);
+  const [categories, setCategories] = useState<any[] | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
 
   const handleSubmit = async (values: any) => {
@@ -122,7 +122,9 @@ const AddBlogPage = () => {
     updateTextCheck("imageChosen", isImageChosen);
   }, [imageFile]);
   useEffect(() => {
-    updateTextCheck("categories", categories.length > 0);
+    if (categories !== null) {
+      updateTextCheck("categories", categories.length > 0);
+    }
   }, [categories]);
   return (
     <>
@@ -377,6 +379,7 @@ const AddBlogPage = () => {
             width={"432px"}
             height={"44px"}
             handleClick={() => router.push("/blogs")}
+            loading={false}
           />
         </Space>
       </Modal>

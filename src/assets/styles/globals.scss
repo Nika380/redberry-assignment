@@ -413,3 +413,20 @@ img {
 .pb {
   padding-bottom: 200px !important;
 }
+
+.ant-tag-close-icon {
+  position: relative !important;
+  left: -30px !important;
+}
+
+.ant-select-selection-overflow {
+  flex-wrap: unset !important;
+  gap: 15px;
+  overflow: hidden;
+}
+
+.ant-tag {
+  .ant-typography {
+    width: 100% !important;
+  }
+}

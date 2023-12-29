@@ -35,6 +35,7 @@ const HeaderComponent = () => {
                 ? () => router.push("/blogs/add-blog")
                 : () => setIsLoginModalOpen(true)
             }
+            loading={false}
           />
         )}
       </div>

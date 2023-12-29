@@ -10,7 +10,9 @@ const LoginModal = ({ isOpen, setIsOpen }: any) => {
   const [isSuccess, setIsSuccess] = useState<boolean | null>(null);
   const [form] = Form.useForm();
   const { login, logout } = useAuth();
+  const [loading, setLoading] = useState<boolean>(false);
   const handleLogin = async () => {
+    setLoading(true);
     const email = form.getFieldValue("email");
     await API.post("/login", { email: email })
       .then((res) => {
@@ -21,6 +23,9 @@ const LoginModal = ({ isOpen, setIsOpen }: any) => {
       .catch(() => {
         logout();
         setIsError(true);
+      })
+      .finally(() => {
+        setLoading(false);
       });
   };
   return (
@@ -114,6 +119,7 @@ const LoginModal = ({ isOpen, setIsOpen }: any) => {
                 width={"432px"}
                 height={"44px"}
                 handleClick={handleLogin}
+                loading={loading}
               />
             </>
           ) : (
@@ -137,6 +143,7 @@ const LoginModal = ({ isOpen, setIsOpen }: any) => {
                 width={"432px"}
                 height={"44px"}
                 handleClick={() => setIsOpen(false)}
+                loading={false}
               />
             </>
           )}

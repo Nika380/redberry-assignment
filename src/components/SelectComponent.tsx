@@ -1,6 +1,6 @@
 "use client";
 import API from "@/utils/API";
-import { Select, Space, Typography } from "antd";
+import { Select, Space, Tag, Typography } from "antd";
 import React, { useEffect, useState } from "react";
 import CategoryComponent from "./CategoryComponent";
 import { inputLabelStyles, labelSpaceStyles } from "@/assets/assets";
@@ -16,6 +16,22 @@ const SelectComponent = ({ setCategories, notifClass }: any) => {
   useEffect(() => {
     fetchOptionsList();
   }, []);
+
+  function tagRender(props: any) {
+    const { label, value, closable, onClose } = props;
+
+    return (
+      <Tag
+        color={value}
+        closable={closable}
+        onClose={onClose}
+        style={{ marginRight: 3, width: "calc(100% + 20px)" }}
+      >
+        {label}
+      </Tag>
+    );
+  }
+
   return (
     <Space className={`select-component `} {...labelSpaceStyles}>
       <Typography {...inputLabelStyles}>კატეგორია *</Typography>
@@ -26,7 +42,7 @@ const SelectComponent = ({ setCategories, notifClass }: any) => {
         }}
         placeholder="აირჩიეთ კატეგორია"
         mode="multiple"
-        maxTagCount={"responsive"}
+        tagRender={tagRender}
         onChange={(categories) => {
           setCategories(categories);
         }}

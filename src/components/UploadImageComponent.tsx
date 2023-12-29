@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import folderAddImage from "../assets/images/folder-add.png";
 import galleryPng from "../assets/images/gallery.png";
@@ -8,6 +8,12 @@ import ExitIcon from "./ExitIcon";
 const UploadImageComponent = ({ setImageFile }: any) => {
   const [fileChosen, setFileChosen] = useState(false);
   const [fileName, setFileName] = useState("");
+
+  useEffect(() => {
+    if (!fileChosen) {
+      setImageFile(null);
+    }
+  }, [fileChosen]);
 
   return (
     <div className="image-upload">
